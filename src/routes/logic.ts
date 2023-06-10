@@ -77,89 +77,95 @@ const oldExp = {
 };
 
 export class Chara {
-    level: number
-    exp: number;
-    newage: boolean;
+  level: number;
+  exp: number;
+  newage: boolean;
 
-    constructor(level: number, exp: number) {
-        this.level = level;
-        this.exp = exp;
-        this.newage = false;
-    }
+  constructor(level: number, exp: number) {
+    this.level = level;
+    this.exp = exp;
+    this.newage = false;
+  }
 
-    clone() {
-        return new Chara(this.level, this.exp);
-    }
+  clone() {
+    return new Chara(this.level, this.exp);
+  }
 
-    updateExp() {
-        if(this.newage) {
-            while(this.exp >= oldExp[this.level] / 2) {
-                this.exp -= oldExp[this.level] / 2;
-                this.level++;
-            }
-        }
-        else {
-            while(this.exp >= oldExp[this.level]) {
-                this.exp -= oldExp[this.level];
-                this.level++;
-            }
-        }
+  updateExp() {
+    while (this.exp >= this.getExpSize()) {
+      this.exp -= this.getExpSize();
+      this.level++;
     }
+  }
 
-    useItem() {
-        if(this.newage) {
-            this.exp += oldExp[Math.min(this.level, 249)] / 2;
-            this.updateExp()
-        }
-        else {
-            this.exp += oldExp[Math.min(this.level, 249)];
-            this.updateExp()
-        }
+  useItem() {
+    if (this.newage) {
+      this.exp += oldExp[Math.min(this.level, 249)] / 2;
+      this.updateExp();
+    } else {
+      this.exp += oldExp[Math.min(this.level, 249)];
+      this.updateExp();
     }
+  }
 
-    newify() {
-        this.newage = true;
-        this.updateExp();
-    }
+  newify() {
+    this.newage = true;
+    this.updateExp();
+  }
 
-    getExpRate() {
-        if(this.newage) {
-            return this.exp / (oldExp[this.level] / 2) * 100;
-        }
-        else {
-            return this.exp / oldExp[this.level] * 100;
-        }
-    }
+  getExpRate() {
+    return (this.exp / this.getExpSize()) * 100;
+  }
 
-    static convertToExp(level: number, expRate: number) {
-        return expRate * oldExp[level] / 100;
+  getExpSize() {
+    if (this.newage && this.level < 270) {
+      if (this.level >= 265) {
+        return oldExp[this.level] * 0.8;
+      } else if (this.level >= 260) {
+        return oldExp[this.level] * 0.6;
+      } else {
+        return oldExp[this.level] * 0.5;
+      }
+    } else {
+      return oldExp[this.level];
     }
+  }
+
+  static convertToExp(level: number, expRate: number) {
+    return (expRate * oldExp[level]) / 100;
+  }
 }
 
-export function getBestCount(ch: Chara, total: number): [number, Chara, (Chara | number)[]] {
-    let maxCh = ch;
-    let maxI = 0;
-    let maxHistory = [];
-    for(let i = 0; i <= total; i++) {
-        let history = [];
-        let newCh = ch.clone();
-        history.push(newCh.clone());
-        for(let _ = 0; _ < i; _++) {
-            newCh.useItem();
-            history.push(newCh.clone());
-        }
-        newCh.newify();
-        history.push(1);
-        history.push(newCh.clone());
-        for(let _ = 0; _ < total - i; _++) {
-            newCh.useItem();
-            history.push(newCh.clone())
-        }
-        if(newCh.level > maxCh.level || newCh.level === maxCh.level && newCh.exp > maxCh.exp - 1) {
-            maxCh = newCh;
-            maxI = i;
-            maxHistory = history;
-        }
+export function getBestCount(
+  ch: Chara,
+  total: number
+): [number, Chara, (Chara | number)[]] {
+  let maxCh = ch;
+  let maxI = 0;
+  let maxHistory = [];
+  for (let i = 0; i <= total; i++) {
+    let history = [];
+    let newCh = ch.clone();
+    history.push(newCh.clone());
+    for (let _ = 0; _ < i; _++) {
+      newCh.useItem();
+      history.push(newCh.clone());
     }
-    return [maxI, maxCh, maxHistory];
+    newCh.newify();
+    history.push(1);
+    history.push(newCh.clone());
+    for (let _ = 0; _ < total - i; _++) {
+      newCh.useItem();
+      history.push(newCh.clone());
+    }
+    if (
+      newCh.level > maxCh.level ||
+      (newCh.level === maxCh.level && newCh.exp > maxCh.exp - 1)
+    ) {
+      maxCh = newCh;
+      maxI = i;
+      maxHistory = history;
+    }
+  }
+  return [maxI, maxCh, maxHistory];
 }

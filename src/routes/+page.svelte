@@ -29,10 +29,10 @@
 
 <main>
   <h3>NEW AGE 극성비 먹을까 말까 계산기 (~2023/06/15)</h3>
-  ※ 260 이상이면 패치 전에 다 먹으세요.
+  ※ 260레벨 이상은 정확하지 않습니다.
   <label>
     현재 레벨
-    <input type="number" bind:value={level} min="240" max="259" />
+    <input type="number" bind:value={level} min="240" max="269" />
   </label>
   <label>
     현재 경험치 %
