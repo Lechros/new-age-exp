@@ -108,11 +108,11 @@ export class Chara {
 
     useItem() {
         if(this.newage) {
-            this.exp += oldExp[Math.max(this.level, 249)] / 2;
+            this.exp += oldExp[Math.min(this.level, 249)] / 2;
             this.updateExp()
         }
         else {
-            this.exp += oldExp[Math.max(this.level, 249)];
+            this.exp += oldExp[Math.min(this.level, 249)];
             this.updateExp()
         }
     }
