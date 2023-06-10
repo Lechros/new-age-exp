@@ -16,9 +16,9 @@
       })
       .join(" -> ");
     return (
-      `극성비 ${total}개 중 패치 전에 ${count}개, 패치 후에 ${
+      `- 총 극성비 ${total}개: 패치 전에 ${count}개, 패치 후에 ${
         total - count
-      }개 먹으면: ` + h
+      }개, ` + h
     );
   }
 
