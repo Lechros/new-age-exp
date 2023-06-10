@@ -23,14 +23,13 @@
   }
 
   function getExpRateString(ch: Chara) {
-    console.log(ch, Math.floor(ch.getExpRate() * 1000) / 1000)
     return Math.floor(ch.getExpRate() * 1000) / 1000;
   }
 </script>
 
 <main>
   <h3>NEW AGE 극성비 먹을까 말까 계산기 (~2023/06/15)</h3>
-  ※ 260레벨 이상은 정확하지 않습니다.
+  ※ 260레벨 이상은 정확하지 않습니다. 레벨업 되기 전까지 드세요.
   <label>
     현재 레벨
     <input type="number" bind:value={level} min="240" max="269" />
