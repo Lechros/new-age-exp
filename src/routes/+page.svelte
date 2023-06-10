@@ -23,6 +23,7 @@
   }
 
   function getExpRateString(ch: Chara) {
+    console.log(ch, Math.floor(ch.getExpRate() * 1000) / 1000)
     return Math.floor(ch.getExpRate() * 1000) / 1000;
   }
 </script>

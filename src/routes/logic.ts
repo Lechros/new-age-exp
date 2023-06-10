@@ -88,7 +88,9 @@ export class Chara {
   }
 
   clone() {
-    return new Chara(this.level, this.exp);
+    const ch = new Chara(this.level, this.exp);
+    ch.newage = this.newage;
+    return ch;
   }
 
   updateExp() {
