@@ -38,7 +38,7 @@
     현재 경험치 %
     <input type="number" bind:value={expRate} min="0" max="99" />
   </label>
-  {#each [1, 2, 3, 4, 5] as i}
+  {#each [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as i}
     <div>{buildMessage(level, expRate, i)}</div>
   {/each}
 </main>
